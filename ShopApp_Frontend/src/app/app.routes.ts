@@ -10,6 +10,8 @@ import { AuthGuardFn } from "./guards/auth.guard";
 import { UserProfileComponent } from "./components/user-profile/user-profile.component";
 import { AuthCallbackComponent } from "./components/auth-callback/auth-callback.component";
 import { PaymentCallbackComponent } from "./components/payment-callback/payment-callback.component";
+import { IntroduceComponent } from "./components/introduce/introduce.component";
+import { ContactComponent } from "./components/contact/contact.component";
 
 export const routes: Routes = [
     { path: '', component: HomeComponent },
@@ -21,5 +23,7 @@ export const routes: Routes = [
     { path: 'products/:id', component: DetailProductComponent },
     { path: 'orders', component: OrderComponent, canActivate: [AuthGuardFn] },
     { path: 'user-profile', component: UserProfileComponent, canActivate: [AuthGuardFn] },
+    { path: 'introduce', component: IntroduceComponent },
+    { path: 'contact', component: ContactComponent },
     { path: 'orders/:id', component: OrderConfirmComponent },
 ];

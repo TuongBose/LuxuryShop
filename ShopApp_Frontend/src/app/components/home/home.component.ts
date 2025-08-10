@@ -4,7 +4,7 @@ import { SanPham } from '../../models/sanpham';
 import { SanPhamService } from '../../services/sanpham.service';
 import { LoaiSanPham } from '../../models/loaisanpham';
 import { LoaiSanPhamService } from '../../services/loaisanpham.service';
-import { Router } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { HeaderComponent } from '../header/header.component';
 import { FooterComponent } from '../footer/footer.component';
 import { CommonModule } from '@angular/common';
@@ -22,7 +22,7 @@ import { ApiResponse } from '../../responses/api.response';
     HeaderComponent,
     FooterComponent,
     CommonModule,
-    FormsModule
+    FormsModule,
   ]
 
 })
@@ -138,6 +138,13 @@ export class HomeComponent extends BaseComponent implements OnInit {
       this.router.navigate(['/order']); // Chuyển ngay đến trang order
     } else {
       console.error("Không thể mua ngay vì San Phẩm là Null.");
+    }
+  }
+
+  scrollToProducts(): void {
+    const productSection = document.getElementById('product-section');
+    if (productSection) {
+      productSection.scrollIntoView({ behavior: 'smooth' });
     }
   }
 }

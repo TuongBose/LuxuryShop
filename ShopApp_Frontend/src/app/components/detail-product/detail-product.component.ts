@@ -48,6 +48,7 @@ export class DetailProductComponent extends BaseComponent implements OnInit {
     sosao: 0,
     product_id: 0
   };
+  isLoading: boolean = true;
 
   ngOnInit(): void {
     debugger
@@ -62,6 +63,7 @@ export class DetailProductComponent extends BaseComponent implements OnInit {
       }
 
       if (!isNaN(this.maSanPham)) {
+        this.isLoading=true;  
         this.sanPhamService.getSanPham(this.maSanPham).subscribe({
           next: (apiResponse: ApiResponse) => {
             const response = apiResponse.data;
@@ -74,10 +76,14 @@ export class DetailProductComponent extends BaseComponent implements OnInit {
             this.sanPham = response
             this.showImage(0);
           },
-          complete: () => { debugger },
+          complete: () => { 
+            debugger;
+            this.isLoading=false;
+           },
           error: (error: any) => {
             debugger;
             console.error('Error fetching detail: ', error);
+            this.sanPham=undefined;
           }
         });
 
@@ -137,7 +143,17 @@ export class DetailProductComponent extends BaseComponent implements OnInit {
 
   increaseQuantity(): void {
     debugger;
-    this.quantity++;
+    if (this.quantity < this.sanPham!.soluongtonkho) {
+      this.quantity++;
+    }
+    else {
+      this.toastService.showToast({
+        defaultMsg: 'Đã đạt giới hạn kho',
+        title: 'Thông báo',
+        delay: 3000,
+        type: 'danger'
+      });
+    }
   }
 
   decreaseQuantity(): void {
@@ -182,8 +198,8 @@ export class DetailProductComponent extends BaseComponent implements OnInit {
     const feedbackDTO: FeedbackDTO = {
       user_id: this.account?.userid,
       product_id: this.maSanPham,
-      sosao:this.newFeedback.sosao,
-      content:this.newFeedback.content
+      sosao: this.newFeedback.sosao,
+      content: this.newFeedback.content
     }
 
     this.isAddingFeedback = true;

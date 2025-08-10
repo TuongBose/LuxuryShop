@@ -6,6 +6,7 @@ import { Router, RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { BaseComponent } from '../base/base.component';
+import { environment } from '../../environments/environment';
 
 @Component({
   selector: 'app-header',
@@ -22,6 +23,8 @@ export class HeaderComponent extends BaseComponent implements OnInit {
   account?: AccountResponse | null;
   isPopoverOpen?: boolean;
   cartItemCount: number = 0;
+  logoUrl?:string;
+  logoname :string='logo2.png';
 
   activeNavItem: number = 0;
   navItems = [
@@ -29,6 +32,8 @@ export class HeaderComponent extends BaseComponent implements OnInit {
     { name: 'Sản phẩm', route: '/products' },
     { name: 'Đơn hàng', route: '/orders' },
     { name: 'Tài khoản', route: '/account' },
+    { name: 'Giới thiệu', route: '/introduce' },
+    { name: 'Liên hệ', route: '/contact' },
   ];
 
   constructor() {
@@ -63,6 +68,8 @@ export class HeaderComponent extends BaseComponent implements OnInit {
         }
       });
     }
+
+    this.logoUrl = `${environment.apiBaseUrl}/sanphams/images/${this.logoname}`;
   }
 
   updateCartCount(): void {

@@ -1,4 +1,5 @@
 <app-header></app-header>
+@if(!isLoading){
 <div class="container py-5">
   <div class="intro-section text-center mb-5">
     <h1 class="display-5 fw-bold">Chi tiết sản phẩm</h1>
@@ -38,7 +39,15 @@
       <div class="product-details p-4 bg-white rounded shadow-sm">
         <h2 class="product-name">{{ sanPham?.tensanpham }}</h2>
         <p class="product-description text-muted">{{ sanPham?.mota }}</p>
-        <p class="product-price fw-bold">Giá: <span class="text-primary">${{ sanPham?.gia }}</span></p>
+        <p class="product-price fw-bold">Kho: <span class="text-danger">{{ sanPham?.soluongtonkho }}</span></p>
+        <p class="product-price fw-bold">
+          Giá:
+          <span class="text-primary">
+            {{ sanPham?.gia | currency: 'VND':'symbol':'1.0-0' }}
+          </span>
+        </p>
+        @if(sanPham!.soluongtonkho>0){
+        <span class="badge bg-success">Còn hàng</span>
         <p class="product-total fw-bold">Tổng tiền: <span class="text-success">${{ getTotalPrice() | number: '1.2-2'
             }}</span></p>
         <div class="product-actions mt-4">
@@ -52,6 +61,9 @@
             <button class="btn btn-outline-secondary" (click)="increaseQuantity()">+</button>
           </div>
         </div>
+        }@else {
+        <span class="badge bg-danger">Hết hàng</span>
+        }
       </div>
     </div>
   </div>
@@ -78,7 +90,7 @@
         {{ isAddingFeedback ? 'Đang gửi...' : 'Gửi đánh giá' }}
       </button>
     </div>
-<br>
+    <br>
     <h3 class="mb-3">Đánh giá và Nhận xét</h3>
     @if(feedbackResponse.length > 0){
     <div class="feedback-list">
@@ -86,9 +98,9 @@
       <div class="feedback-item p-3 mb-3 bg-light rounded">
         <p class="mb-1"><strong>{{ feedback.accountResponse.fullname }}</strong> - {{ feedback.createdAt |
           date:'dd/MM/yyyy' }}</p>
-          @for(i of getStarArray(feedback.sosao); track i){
-         <span class="text-warning">★</span>
-          }
+        @for(i of getStarArray(feedback.sosao); track i){
+        <span class="text-warning">★</span>
+        }
         <p class="mb-0">{{ feedback.noidung }}</p>
       </div>
       }
@@ -100,4 +112,12 @@
     }
   </div>
 </div>
+} @else {
+<!-- Template khi đang tải -->
+<ng-template #loadingTemplate>
+  <div class="text-center py-5">
+    <p>Đang tải dữ liệu sản phẩm...</p>
+  </div>
+</ng-template>
+}
 <app-footer></app-footer>

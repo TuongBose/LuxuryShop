@@ -15,7 +15,7 @@
       <h1 class="display-3 fw-black mb-4">Shop Smart<br><strong>Succeed Big</strong></h1>
       <p class="lead mb-4">Simple, highlights a fulfilling lifestyle and ease of shopping</p>
       <div class="d-flex align-items-center gap-3">
-        <button class="btn-hero-section">Bắt đầu mua sắm</button>
+        <button class="btn-hero-section" (click)="scrollToProducts()">Bắt đầu mua sắm</button>
         <div class="small">
           <p class="mb-0">Giảm 20% với đơn hơn 200k</p>
           <p class="mb-0">Ưu đãi hấp dẫn</p>
@@ -26,14 +26,14 @@
     <div class="col-md-6 d-flex justify-content-end mt-4 mt-md-0">
       <div class="text-muted small d-flex align-items-center cursor-pointer">
         <i class="fas fa-play-circle me-2"></i>
-        <span>Tại sao chọn ShopApp?</span>
+        <a href="https://github.com/TuongBose" style="text-decoration: none; color:rgb(73, 70, 70); font-weight: 500; ">Tại sao chọn MANHTUONG?</a>
       </div>
     </div>
   </div>
 </div>
 
 <!-- Search and Category Section -->
-<div class="container py-4">
+<div id="product-section" class="container py-4">
   <div class="search-box d-flex justify-content-center mb-5">
     <input type="text" class="form-control search-input me-3" placeholder="Tìm sản phẩm..." [(ngModel)]="keyword" />
     <select class="form-control product-category me-3" [(ngModel)]="selectedMALOAISANPHAM">
@@ -64,45 +64,50 @@
           <i class="fa-solid fa-star text-warning"></i>
           <i class="fa-solid fa-star-half-stroke text-warning"></i>
         </div>
-        <div class="product-actions mt-3">
-          <button class="btn btn-primary me-2" (click)="addToCart($event, sanpham.masanpham)">Thêm vào giỏ</button>
-          <button class="btn btn-success" (click)="buyNow($event, sanpham.masanpham)">Mua ngay</button>
-        </div>
+        @if (sanpham.soluongtonkho <= 0) { <div class="out-of-stock-overlay">
+          <i class="fa-solid fa-ban"></i>
+          <span class="out-of-stock-text">Hết hàng</span>
+      </div>
+      }
+      <div class="product-actions mt-3">
+        <button class="btn btn-primary me-2" (click)="addToCart($event, sanpham.masanpham)">Thêm vào giỏ</button>
+        <button class="btn btn-success" (click)="buyNow($event, sanpham.masanpham)">Mua ngay</button>
       </div>
     </div>
-    }
   </div>
+  }
+</div>
 
-  <!-- Pagination -->
-  <div class="d-flex justify-content-center mt-5">
-    <nav aria-label="Page navigation">
-      <ul class="pagination">
-        @if (currentPage > 0) {
-        <li class="page-item">
-          <a class="page-link" href="#" (click)="onPageChange(0)">First</a>
+<!-- Pagination -->
+<div class="d-flex justify-content-center mt-5">
+  <nav aria-label="Page navigation">
+    <ul class="pagination">
+      @if (currentPage > 0) {
+      <li class="page-item">
+        <a class="page-link" href="#" (click)="onPageChange(0)">First</a>
+      </li>
+      <li class="page-item">
+        <a class="page-link" href="#" (click)="onPageChange(currentPage - 1)">
+          <i class="fa fa-chevron-left"></i>
+        </a>
+      </li>
+      }
+      @for (page of visiblePages; track page) {
+      <li class="page-item" [ngClass]="{'active': page === currentPage}">
+        <a class="page-link" href="#" (click)="onPageChange(page)">{{ page + 1 }}</a>
+      </li>
+      }
+      @if (currentPage < totalPages - 1) { <li class="page-item">
+        <a class="page-link" href="#" (click)="onPageChange(currentPage + 1)">
+          <i class="fa fa-chevron-right"></i>
+        </a>
         </li>
         <li class="page-item">
-          <a class="page-link" href="#" (click)="onPageChange(currentPage - 1)">
-            <i class="fa fa-chevron-left"></i>
-          </a>
+          <a class="page-link" href="#" (click)="onPageChange(totalPages - 1)">Last</a>
         </li>
         }
-        @for (page of visiblePages; track page) {
-        <li class="page-item" [ngClass]="{'active': page === currentPage}">
-          <a class="page-link" href="#" (click)="onPageChange(page)">{{ page + 1 }}</a>
-        </li>
-        }
-        @if (currentPage < totalPages - 1) { <li class="page-item">
-          <a class="page-link" href="#" (click)="onPageChange(currentPage + 1)">
-            <i class="fa fa-chevron-right"></i>
-          </a>
-          </li>
-          <li class="page-item">
-            <a class="page-link" href="#" (click)="onPageChange(totalPages - 1)">Last</a>
-          </li>
-          }
-      </ul>
-    </nav>
-  </div>
+    </ul>
+  </nav>
+</div>
 </div>
 <app-footer></app-footer>

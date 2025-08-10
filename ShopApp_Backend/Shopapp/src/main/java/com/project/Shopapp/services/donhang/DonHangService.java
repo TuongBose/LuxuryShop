@@ -53,17 +53,17 @@ public class DonHangService implements IDonHangService {
         donHang.setTONGTIEN(donHangDTO.getTONGTIEN());
 
         // Xu ly coupon
-        String couponCode =donHangDTO.getCouponCode();
-        if(couponCode!=null){
+        String couponCode = donHangDTO.getCouponCode();
+        if (couponCode != null) {
             Coupon coupon = couponRepository.findByCode(couponCode)
-                    .orElseThrow(()-> new IllegalArgumentException("Coupon not found"));
+                    .orElseThrow(() -> new IllegalArgumentException("Coupon not found"));
 
             if (!coupon.isActive()) {
                 throw new IllegalArgumentException("Coupon is not active");
             }
 
             donHang.setCoupon(coupon);
-        }else {
+        } else {
             donHang.setCoupon(null);
         }
 
@@ -85,6 +85,12 @@ public class DonHangService implements IDonHangService {
             ctdh.setTONGTIEN(sanPham.getGIA().multiply(BigDecimal.valueOf(quantity)));
             ctdh.setCoupon(donHang.getCoupon());
 
+            if (quantity > sanPham.getSOLUONGTONKHO()) {
+                throw new RuntimeException("Quantity in stock does not enough");
+            } else {
+                sanPham.setSOLUONGTONKHO(sanPham.getSOLUONGTONKHO() - quantity);
+            }
+
             ctdhList.add(ctdh);
         }
 
@@ -94,7 +100,7 @@ public class DonHangService implements IDonHangService {
         DonHangResponse donHangResponse = modelMapper.map(donHang, DonHangResponse.class);
         donHangResponse.setCtdhList(ctdhResponseList);
 
-        return  donHangResponse;
+        return donHangResponse;
     }
 
     @Override
@@ -137,28 +143,28 @@ public class DonHangService implements IDonHangService {
 
         existingDonHang.setUSERID(existingAccount);
 
-        if(donHangDTO.getFULLNAME()!=null&&!donHangDTO.getFULLNAME().trim().isEmpty()) {
+        if (donHangDTO.getFULLNAME() != null && !donHangDTO.getFULLNAME().trim().isEmpty()) {
             existingDonHang.setFULLNAME(donHangDTO.getFULLNAME());
         }
-        if(donHangDTO.getEMAIL()!=null&&!donHangDTO.getEMAIL().trim().isEmpty()) {
+        if (donHangDTO.getEMAIL() != null && !donHangDTO.getEMAIL().trim().isEmpty()) {
             existingDonHang.setEMAIL(donHangDTO.getEMAIL().trim());
         }
-        if(donHangDTO.getSODIENTHOAI()!=null&&!donHangDTO.getSODIENTHOAI().trim().isEmpty()) {
+        if (donHangDTO.getSODIENTHOAI() != null && !donHangDTO.getSODIENTHOAI().trim().isEmpty()) {
             existingDonHang.setSODIENTHOAI(donHangDTO.getSODIENTHOAI().trim());
         }
-        if(donHangDTO.getDIACHI()!=null&&!donHangDTO.getDIACHI().trim().isEmpty()) {
+        if (donHangDTO.getDIACHI() != null && !donHangDTO.getDIACHI().trim().isEmpty()) {
             existingDonHang.setDIACHI(donHangDTO.getDIACHI());
         }
-        if(donHangDTO.getGHICHU()!=null&&!donHangDTO.getGHICHU().trim().isEmpty()) {
+        if (donHangDTO.getGHICHU() != null && !donHangDTO.getGHICHU().trim().isEmpty()) {
             existingDonHang.setGHICHU(donHangDTO.getGHICHU());
         }
-        if(donHangDTO.getTONGTIEN()!=null) {
+        if (donHangDTO.getTONGTIEN() != null) {
             existingDonHang.setTONGTIEN(donHangDTO.getTONGTIEN());
         }
-        if(donHangDTO.getPHUONGTHUCTHANHTOAN()!=null&&!donHangDTO.getPHUONGTHUCTHANHTOAN().trim().isEmpty()) {
+        if (donHangDTO.getPHUONGTHUCTHANHTOAN() != null && !donHangDTO.getPHUONGTHUCTHANHTOAN().trim().isEmpty()) {
             existingDonHang.setPHUONGTHUCTHANHTOAN(donHangDTO.getPHUONGTHUCTHANHTOAN().trim());
         }
-        if(donHangDTO.getStatus()!=null&&!donHangDTO.getStatus().trim().isEmpty()){
+        if (donHangDTO.getStatus() != null && !donHangDTO.getStatus().trim().isEmpty()) {
             existingDonHang.setTRANGTHAI(donHangDTO.getStatus().trim());
         }
 
