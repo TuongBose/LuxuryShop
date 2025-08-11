@@ -21,7 +21,11 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" [ngClass]="{'active':activeNavItem===1}" (click)="setActiveNavItem(1)"
-                            routerLink="/">Thông báo</a>
+                            routerLink="/notification"><i class="fa fa-bell"></i>Thông báo
+                            @if(unreadNotificationCount > 0 && account){
+                            <span class="notification-badge">{{ unreadNotificationCount }}</span>
+                            }
+                        </a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" [ngClass]="{'active':activeNavItem===5}" (click)="setActiveNavItem(5)"

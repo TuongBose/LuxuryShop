@@ -7,6 +7,8 @@ import { CommonModule } from '@angular/common';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { BaseComponent } from '../base/base.component';
 import { environment } from '../../environments/environment';
+import { NotificationResponse } from '../../responses/notification.response';
+import { ApiResponse } from '../../responses/api.response';
 
 @Component({
   selector: 'app-header',
@@ -23,12 +25,14 @@ export class HeaderComponent extends BaseComponent implements OnInit {
   account?: AccountResponse | null;
   isPopoverOpen?: boolean;
   cartItemCount: number = 0;
-  logoUrl?:string;
-  logoname :string='logo2.png';
+  unreadNotificationCount: number = 0;
+  logoUrl?: string;
+  logoname: string = 'logo2.png';
 
   activeNavItem: number = 0;
   navItems = [
     { name: 'Trang chủ', route: '/home' },
+    { name: 'Thông báo', route: '/notification' },
     { name: 'Sản phẩm', route: '/products' },
     { name: 'Đơn hàng', route: '/orders' },
     { name: 'Tài khoản', route: '/account' },
@@ -70,6 +74,7 @@ export class HeaderComponent extends BaseComponent implements OnInit {
     }
 
     this.logoUrl = `${environment.apiBaseUrl}/sanphams/images/${this.logoname}`;
+    this.loadUnreadNotifications();
   }
 
   updateCartCount(): void {
@@ -95,5 +100,20 @@ export class HeaderComponent extends BaseComponent implements OnInit {
 
   setActiveNavItem(index: number) {
     this.activeNavItem = index;
+  }
+
+  private loadUnreadNotifications(): void {
+        debugger
+    if (this.account && this.account.userid) {
+      this.notificationService.getUnreadNotifications().subscribe({
+        next: (apiResponse:ApiResponse) => {
+        debugger
+          this.unreadNotificationCount = (apiResponse.data as NotificationResponse[]).length;
+        },
+        error: (err) => {
+          console.error('Lỗi khi tải số thông báo chưa đọc:', err);
+        }
+      });
+    }
   }
 }

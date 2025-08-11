@@ -14,6 +14,7 @@ import { DonHangService } from "../../services/donhang.service";
 import { PaymentService } from "../../services/payment.service";
 import { AuthService } from "../../services/auth.service";
 import { FeedbackService } from "../../services/feedback.service";
+import { NotificationService } from "../../services/notification.service";
 
 @Component({
   selector: 'app-base',
@@ -39,6 +40,7 @@ export class BaseComponent {
   paymentService: PaymentService = inject(PaymentService);
   authService:AuthService=inject(AuthService);
   feedbackService:FeedbackService=inject(FeedbackService);
+  notificationService:NotificationService=inject(NotificationService);
 
   generateVisiblePageArray(currentPage: number, totalPages: number): number[] {
     const maxVisiblePages = 5;
