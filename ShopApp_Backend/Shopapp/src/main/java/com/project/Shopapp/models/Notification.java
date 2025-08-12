@@ -2,7 +2,6 @@ package com.project.Shopapp.models;
 import jakarta.persistence.*;
 import lombok.*;
 
-@Data
 @Entity
 @Table(name = "notifications")
 @AllArgsConstructor

@@ -49,6 +49,18 @@ public class NotificationService implements INotificationService {
     }
 
     @Override
+    public void markAllAsReadNotification(int userId) throws Exception {
+        Account existingAccount = accountRepository.findById(userId).orElseThrow(
+                () -> new DataNotFoundException(localizationUtils.getLocalizedMessage(MessageKeys.USER_NOT_FOUND))
+        );
+        List<Notification> notifications = notificationRepository.findByUser(existingAccount);
+        for (Notification notification : notifications) {
+            notification.setIsRead(true);
+        }
+        notificationRepository.saveAll(notifications);
+    }
+
+    @Override
     public List<NotificationResponse> getUnreadNotificationsByUserId(int userId) throws Exception{
         Account existingAccount = accountRepository.findById(userId).orElseThrow(
                 () -> new DataNotFoundException(localizationUtils.getLocalizedMessage(MessageKeys.USER_NOT_FOUND))

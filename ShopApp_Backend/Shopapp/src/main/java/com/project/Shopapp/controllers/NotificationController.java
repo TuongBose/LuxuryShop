@@ -1,6 +1,7 @@
 package com.project.Shopapp.controllers;
 
 import com.project.Shopapp.components.LocalizationUtils;
+import com.project.Shopapp.exceptions.DataNotFoundException;
 import com.project.Shopapp.models.Account;
 import com.project.Shopapp.responses.ResponseObject;
 import com.project.Shopapp.responses.notification.NotificationResponse;
@@ -74,6 +75,19 @@ public class NotificationController {
         return ResponseEntity.ok(ResponseObject.builder()
                 .message(localizationUtils.getLocalizedMessage(
                         MessageKeys.NOTIFICATION_DELETE_SUCCESS, notificationId))
+                .status(HttpStatus.OK)
+                .data(null)
+                .build());
+    }
+
+    @PostMapping("/mark-all-as-read")
+    @PreAuthorize("hasRole('USER')")
+    public ResponseEntity<ResponseObject> markAllAsRead() throws Exception {
+        Account loginAccount = (Account) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        int userId = loginAccount.getUSERID();
+        notificationService.markAllAsReadNotification(userId);
+        return ResponseEntity.ok(ResponseObject.builder()
+                .message(localizationUtils.getLocalizedMessage(MessageKeys.ALL_NOTIFICATIONS_MARKED_READ, userId))
                 .status(HttpStatus.OK)
                 .data(null)
                 .build());

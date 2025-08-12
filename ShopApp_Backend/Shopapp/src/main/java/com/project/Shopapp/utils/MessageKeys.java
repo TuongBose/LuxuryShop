@@ -14,6 +14,7 @@ public class MessageKeys {
     public static final String DELETE_LOAISANPHAM_SUCCESSFULLY = "loaisanpham.delete_loaisanpham.delete_successfully";
     public static final String UPDATE_LOAISANPHAM_SUCCESSFULLY = "loaisanpham.update_loaisanpham.update_successfully";
 
+    public static final String CREATE_DONHANG_SUCCESSFULLY = "donhang.create_donhang.create_successfully";
     public static final String DELETE_DONHANG_SUCCESSFULLY = "donhang.delete_donhang.delete_successfully";
     public static final String DELETE_CHITIETDONHANG_SUCCESSFULLY = "donhang.delete_chitietdonhang.delete_successfully";
 
@@ -28,4 +29,5 @@ public class MessageKeys {
     public static final String NOTIFICATION_NOT_FOUND = "notification.not_found";
     public static final String NOTIFICATION_MARK_SUCCESS = "notification.mark_success";
     public static final String NOTIFICATION_DELETE_SUCCESS = "notification.delete_success";
+    public static final String ALL_NOTIFICATIONS_MARKED_READ="notification.mark_all_success";
 }

@@ -1,6 +1,6 @@
 import { HttpClient } from "@angular/common/http";
 import { environment } from "../environments/environment";
-import { Observable } from "rxjs";
+import { BehaviorSubject, Observable } from "rxjs";
 import { ApiResponse } from "../responses/api.response";
 import { NotificationResponse } from "../responses/notification.response";
 import { Injectable } from "@angular/core";
@@ -13,7 +13,12 @@ export class NotificationService {
     private readonly apiMarkAsRead = `${environment.apiBaseUrl}/notifications/mark-as-read`;
     private readonly apiGetUnreadNotifications = `${environment.apiBaseUrl}/notifications/unread`;
     private readonly apiDeleteNotification = `${environment.apiBaseUrl}/notifications/delete`;
+    private readonly apiMarkAllAsRead = `${environment.apiBaseUrl}/notifications/mark-all-as-read`;
+
     constructor(private http: HttpClient) { }
+
+    private unreadCountSubject = new BehaviorSubject<number>(0);
+    unreadCount$ = this.unreadCountSubject.asObservable();
 
     //Api lấy danh sách thông báo theo userId
     getNotificationByUserId(): Observable<ApiResponse> {
@@ -36,4 +41,15 @@ export class NotificationService {
         return this.http.delete<ApiResponse>(`${this.apiDeleteNotification}/${notificationId}`)
     }
 
+    markAllAsRead(): Observable<ApiResponse> {
+        return this.http.post<ApiResponse>(`${this.apiMarkAllAsRead}`, {});
+    }
+
+    updateUnreadCount(count: number): void {
+        this.unreadCountSubject.next(count);
+    }
+
+    getUnreadCount(): number {
+        return this.unreadCountSubject.value;
+    }
 }

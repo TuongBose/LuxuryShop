@@ -1,4 +1,4 @@
-CREATE TABLE favorites (
+CREATE TABLE IF NOT EXISTS favorites (
     id INT PRIMARY KEY AUTO_INCREMENT,
     user_id INT,
     product_id INT,

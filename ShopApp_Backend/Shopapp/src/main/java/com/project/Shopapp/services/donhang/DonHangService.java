@@ -1,5 +1,6 @@
 package com.project.Shopapp.services.donhang;
 
+import com.project.Shopapp.components.LocalizationUtils;
 import com.project.Shopapp.dtos.CartItemDTO;
 import com.project.Shopapp.dtos.DonHangDTO;
 import com.project.Shopapp.exceptions.DataNotFoundException;
@@ -7,6 +8,7 @@ import com.project.Shopapp.models.*;
 import com.project.Shopapp.repositories.*;
 import com.project.Shopapp.responses.ctdh.CTDHResponse;
 import com.project.Shopapp.responses.donhang.DonHangResponse;
+import com.project.Shopapp.utils.MessageKeys;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,6 +30,8 @@ public class DonHangService implements IDonHangService {
     private final SanPhamRepository sanPhamRepository;
     private final CTDHRepository ctdhRepository;
     private final CouponRepository couponRepository;
+    private final LocalizationUtils localizationUtils;
+    private final NotificationRepository notificationRepository;
     private final ModelMapper modelMapper;
 
     @Override
@@ -99,6 +103,15 @@ public class DonHangService implements IDonHangService {
         List<CTDHResponse> ctdhResponseList = ctdhList.stream().map(CTDHResponse::fromCTDH).toList();
         DonHangResponse donHangResponse = modelMapper.map(donHang, DonHangResponse.class);
         donHangResponse.setCtdhList(ctdhResponseList);
+
+        Notification newNotification = Notification.builder()
+                .user(existingAccount)
+                .title(localizationUtils.getLocalizedMessage(MessageKeys.CREATE_DONHANG_SUCCESSFULLY, donHangResponse.getMADONHANG()))
+                .content("Join us to protect your rights, only receive goods and pay when the order is in \"delivery\" status")
+                .type("INFO")
+                .isRead(false)
+                .build();
+        notificationRepository.save(newNotification);
 
         return donHangResponse;
     }

@@ -15,4 +15,5 @@ public interface NotificationRepository extends JpaRepository<Notification, Inte
     Long countNotificationItems (@Param("userId") int userId);
 
     List<Notification> findByUserAndIsReadFalseOrderByNGAYTAODesc(Account account);
+    List<Notification> findByUser(Account account);
 }

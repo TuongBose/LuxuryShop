@@ -75,6 +75,9 @@ export class HeaderComponent extends BaseComponent implements OnInit {
 
     this.logoUrl = `${environment.apiBaseUrl}/sanphams/images/${this.logoname}`;
     this.loadUnreadNotifications();
+    this.notificationService.unreadCount$.subscribe(count => {
+      this.unreadNotificationCount = count;
+    });
   }
 
   updateCartCount(): void {
@@ -103,12 +106,13 @@ export class HeaderComponent extends BaseComponent implements OnInit {
   }
 
   private loadUnreadNotifications(): void {
-        debugger
+    debugger
     if (this.account && this.account.userid) {
       this.notificationService.getUnreadNotifications().subscribe({
-        next: (apiResponse:ApiResponse) => {
-        debugger
+        next: (apiResponse: ApiResponse) => {
+          debugger
           this.unreadNotificationCount = (apiResponse.data as NotificationResponse[]).length;
+          this.notificationService.updateUnreadCount(this.unreadNotificationCount);
         },
         error: (err) => {
           console.error('Lỗi khi tải số thông báo chưa đọc:', err);
