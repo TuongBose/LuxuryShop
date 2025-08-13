@@ -19,6 +19,23 @@ header.scrolled {
   transition: background-color 0.3s ease-in-out;
 }
 
+.navbar-toggler {
+  border: none; // Loại bỏ viền mặc định
+
+  @media (max-width: 768px) {
+    padding: 0.25rem; // Tối ưu kích thước nút toggle
+  }
+}
+
+.navbar-toggler-icon {
+  background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3E%3Cpath stroke='black' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E");
+  transition: background-image 0.3s ease;
+}
+
+header.scrolled .navbar-toggler-icon {
+  background-image: url("data:image/svg+xml;charset=utf8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3E%3Cpath stroke='white' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E");
+}
+
 .navbar .container {
   display: flex;
   align-items: center;
@@ -29,6 +46,16 @@ header.scrolled {
   color: rgb(173, 178, 203);
   transition: transform 0.3s ease-in-out;
 }
+
+.navbar-brand img {
+  width: 190px;
+  height: 100%;
+
+  @media (max-width: 768px) {
+    max-width: 120px;
+  }
+}
+
 
 .navbar-brand:hover {
   transform: scale(1.1);
@@ -121,16 +148,12 @@ header.scrolled {
 }
 
 @media (max-width: 768px) {
-  .navbar-nav {
-    margin-top: 10px;
-  }
-
   .nav-link {
-    padding: 10px;
+    padding: 6px 10px;
+    font-size: 14px;
   }
 
-  .cart-badge {
-    top: -2px;
-    right: -8px;
+  .navbar-collapse {
+    padding: 0.5rem;
   }
 }

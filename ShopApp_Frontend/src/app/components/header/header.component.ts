@@ -52,6 +52,7 @@ export class HeaderComponent extends BaseComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    debugger
     const currentUrl = this.router.url;
     const foundIndex = this.navItems.findIndex(item => currentUrl.startsWith(item.route));
     this.activeNavItem = foundIndex !== -1 ? foundIndex : 0;

@@ -5,10 +5,13 @@
   <div class="position-absolute top-0 start-0 h-100 w-100 bg-dark"
     style="background: linear-gradient(to right, rgba(0, 0, 0, 0.5), rgba(255, 255, 255, 0.5)); z-index: 0;"></div>
 
-  <!-- Hình dưới lớp phủ -->
-  <img src="https://tamanh.net/wp-content/uploads/2025/07/banner_web_Pc_2025.jpg" alt="Hero Background"
-    class="position-absolute top-0 start-0 w-100 h-100 object-cover -z-1" style="opacity: 0.6;" />
+  <!-- Hình dưới lớp phủ cho desktop -->
+  <img [src]="bannerWebPcUrl" alt="Hero Background"
+    class="position-absolute top-0 start-0 w-100 h-100 object-cover -z-1 hero-image-desktop" style="opacity: 0.6;" />
 
+    <!-- Hình dưới lớp phủ cho mobile -->
+    <img [src]="bannerWebMobileUrl" alt="Hero Background"
+    class="position-absolute top-0 start-0 w-100 h-100 object-cover -z-1 hero-image-mobile" style="opacity: 0.6;" />
   <div
     class="container text-dark d-flex flex-column flex-md-row align-items-start align-items-md-center py-5 position-relative z-10">
     <div class="col-md-6" style="color: white;">
@@ -25,8 +28,8 @@
 
     <div class="col-md-6 d-flex justify-content-end mt-4 mt-md-0">
       <div class="text-muted small d-flex align-items-center cursor-pointer">
-        <i class="fas fa-play-circle me-2"></i>
-        <a href="https://github.com/TuongBose" style="text-decoration: none; color:rgb(73, 70, 70); font-weight: 500; ">Tại sao chọn MANHTUONG?</a>
+        <i class="fas fa-play-circle me-2 icon-about-me"></i>
+        <a class="about-me" href="https://github.com/TuongBose">Tại sao chọn MANHTUONG?</a>
       </div>
     </div>
   </div>
@@ -49,7 +52,7 @@
   </div>
 
   <!-- Product Grid -->
-  <div class="row row-cols-1 row-cols-md-3 g-4">
+  <div class="row row-cols-2 row-cols-md-4 g-4">
     @for (sanpham of sanphams; track sanpham.masanpham) {
     <div class="col">
       <div class="product-item" (click)="onProductClick(sanpham.masanpham)">

@@ -12,6 +12,7 @@ import { AuthCallbackComponent } from "./components/auth-callback/auth-callback.
 import { IntroduceComponent } from "./components/introduce/introduce.component";
 import { ContactComponent } from "./components/contact/contact.component";
 import { NotificationComponent } from "./components/notification/notification.component";
+import { RenderMode } from "@angular/ssr";
 
 export const routes: Routes = [
     { path: '', component: HomeComponent },

@@ -1,24 +1,40 @@
+@import '../../styles/shared-styles.scss';
+
 .introduce-page {
   font-family: Arial, sans-serif;
-  background: #fff;
-  color: #333;
+  background: $shopapp-background;
+  color: $shopapp-text-color;
 
   section {
     padding: 60px 10%;
+    @media (max-width: 768px) {
+      padding: 40px 5%;
+    }
   }
 
   .welcome {
     text-align: center;
-    background: #f9f9f9;
+    background: $shopapp-light-bg;
     padding: 80px 10%;
+    @media (max-width: 768px) {
+      padding: 50px 5%;
+    }
 
     h1 {
       font-size: 36px;
       margin-bottom: 20px;
+      color: $shopapp-tint-color;
+      transition: transform 0.3s ease;
+      &:hover {
+        transform: scale(1.05);
+      }
     }
+
     p {
       font-size: 18px;
-      color: #555;
+      color: $shopapp-secondary-text;
+      max-width: 600px;
+      margin: 0 auto;
     }
   }
 
@@ -26,9 +42,16 @@
     display: flex;
     align-items: center;
     gap: 40px;
+    @media (max-width: 768px) {
+      flex-direction: column;
+      gap: 20px;
+    }
 
     &.reverse {
       flex-direction: row-reverse;
+      @media (max-width: 768px) {
+        flex-direction: column-reverse;
+      }
     }
 
     .text {
@@ -37,12 +60,27 @@
       h2 {
         font-size: 28px;
         margin-bottom: 15px;
-        color: #222;
+        color: $shopapp-tint-color;
+        position: relative;
+        &:after {
+          content: '';
+          position: absolute;
+          bottom: -5px;
+          left: 0;
+          width: 50px;
+          height: 3px;
+          background: $shopapp-color;
+          transition: width 0.3s ease;
+        }
+        &:hover:after {
+          width: 100px;
+        }
       }
+
       p {
         font-size: 16px;
         line-height: 1.6;
-        color: #555;
+        color: $shopapp-secondary-text;
       }
     }
 
@@ -51,17 +89,26 @@
       img {
         width: 100%;
         border-radius: 12px;
+        transition: transform 0.3s ease;
+        &:hover {
+          transform: scale(1.05);
+        }
       }
     }
   }
 
   .contact-form {
-    background: #f1f1f1;
+    background: $shopapp-light-bg;
     text-align: center;
+    padding: 60px 10%;
+    @media (max-width: 768px) {
+      padding: 40px 5%;
+    }
 
     h2 {
       margin-bottom: 20px;
       font-size: 24px;
+      color: $shopapp-tint-color;
     }
 
     form {
@@ -71,32 +118,72 @@
       flex-direction: column;
       gap: 15px;
 
-      input, textarea {
+      input,
+      textarea {
         padding: 12px;
-        border: 1px solid #ccc;
+        border: 1px solid $shopapp-border-color;
         border-radius: 6px;
         font-size: 16px;
+        background: $shopapp-card-bg;
+        color: $shopapp-text-color;
+        transition: border-color 0.3s ease;
+        &:focus {
+          border-color: $shopapp-color;
+          outline: none;
+        }
+      }
+
+      textarea {
+        resize: vertical;
+        min-height: 100px;
       }
 
       button {
-        background: #007bff;
-        color: #fff;
+        background: $shopapp-color;
+        color: $shopapp-light-text;
         padding: 12px;
         border: none;
         border-radius: 6px;
         cursor: pointer;
-        transition: 0.3s;
-
+        transition: background 0.3s ease;
         &:hover {
-          background: #0056b3;
+          background: darken($shopapp-color, 10%);
         }
       }
     }
   }
-}
 
-.divider {
-  height: 1px;
-  background-color: #000000;
-  margin: 20px 0;
+  .divider {
+    height: 1px;
+    background: linear-gradient(to right, transparent, $shopapp-border-color, transparent);
+    margin: 40px 0;
+    @media (max-width: 768px) {
+      margin: 30px 0;
+    }
+
+    &.decorated {
+      position: relative;
+      &:after {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 20px;
+        height: 20px;
+        background: $shopapp-color;
+        border-radius: 50%;
+      }
+    }
+
+    &.dotted {
+      background: none;
+      border-top: 2px dotted $shopapp-border-color;
+    }
+
+    &.thick {
+      height: 3px;
+      background: $shopapp-border-color;
+    }
+  }
 }

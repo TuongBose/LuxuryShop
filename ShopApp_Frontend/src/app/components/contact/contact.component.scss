@@ -26,6 +26,10 @@
     display: flex;
     align-items: center;
     gap: 40px;
+    @media (max-width: 768px) {
+      flex-direction: column-reverse; // Đảo thứ tự, image lên trên
+      gap: 20px;
+    }
 
     &.reverse {
       flex-direction: row-reverse;

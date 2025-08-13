@@ -38,6 +38,12 @@ export class HomeComponent extends BaseComponent implements OnInit {
   loaiSanPhams: LoaiSanPham[] = [];
   isPressAddToCart: boolean = false;
 
+  bannerWebPcName: string = 'banner_web_Pc_2025.jpg';
+  bannerWebPcUrl?: string;
+
+  bannerWebMobileName: string = 'banner_web_Mobile_2025.png';
+  bannerWebMobileUrl?: string;
+
   constructor() {
     super();
   }
@@ -46,6 +52,8 @@ export class HomeComponent extends BaseComponent implements OnInit {
     this.getAllSanPham(this.keyword, this.selectedMALOAISANPHAM, this.currentPage, this.itemsPerPage);
     this.getAllLoaiSanPham(1, 100);
     this.currentPage = Number(localStorage.getItem('currentProductPage')) || 0;
+    this.bannerWebPcUrl = `${environment.apiBaseUrl}/sanphams/images/${this.bannerWebPcName}`;
+    this.bannerWebMobileUrl = `${environment.apiBaseUrl}/sanphams/images/${this.bannerWebMobileName}`;
   }
 
   getAllLoaiSanPham(page: number, limit: number) {
@@ -92,7 +100,7 @@ export class HomeComponent extends BaseComponent implements OnInit {
     debugger;
     this.currentPage = page < 0 ? 0 : page;
     this.getAllSanPham(this.keyword, this.selectedMALOAISANPHAM, this.currentPage, this.itemsPerPage);
-    localStorage.setItem('currentProductPage',String(this.currentPage));
+    localStorage.setItem('currentProductPage', String(this.currentPage));
   }
 
   searchSanPham() {
@@ -107,7 +115,7 @@ export class HomeComponent extends BaseComponent implements OnInit {
     this.router.navigate(['/products', maSanPham]);
   }
 
-  addToCart(event:Event, masanpham: number): void {
+  addToCart(event: Event, masanpham: number): void {
     event.stopPropagation();
     debugger
     const token = this.tokenService.getToken();

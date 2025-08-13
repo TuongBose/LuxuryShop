@@ -2,7 +2,7 @@
     <nav class="navbar navbar-expand-lg navbar-light bg-dark">
         <div class="container">
             <a class="navbar-brand" routerLink="/">
-                <img [src]="logoUrl" alt="TuongBose Logo" style="width: 190px; height: 100%;">
+                <img [src]="logoUrl" alt="TuongBose Logo">
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
                 aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -16,7 +16,7 @@
                             routerLink="/">Trang chủ</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" [ngClass]="{'active':activeNavItem===4}" (click)="setActiveNavItem(4)"
+                        <a class="nav-link" [ngClass]="{'active':activeNavItem===5}" (click)="setActiveNavItem(5)"
                             routerLink="/introduce">Giới thiệu</a>
                     </li>
                     <li class="nav-item">
@@ -28,7 +28,7 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" [ngClass]="{'active':activeNavItem===5}" (click)="setActiveNavItem(5)"
+                        <a class="nav-link" [ngClass]="{'active':activeNavItem===6}" (click)="setActiveNavItem(6)"
                             routerLink="/contact">Liên hệ</a>
                     </li>
                     <li class="nav-item">
