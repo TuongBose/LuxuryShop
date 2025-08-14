@@ -20,7 +20,7 @@ target/
 *.ipr
 
 # Don't commit secret config
-application.yml
+#application.yml
 
 # Don't commit file log
 /src/main/resources/logs/application.log
