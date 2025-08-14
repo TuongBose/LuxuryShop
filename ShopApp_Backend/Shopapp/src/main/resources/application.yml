@@ -75,6 +75,8 @@ spring:
     prefix: classpath:/templates/
     suffix: .html
     mode: HTML
+    enable: true
+    cache: false
 
 api:
   prefix: /api/v1

@@ -14,6 +14,8 @@ import { ContactComponent } from "./components/contact/contact.component";
 import { NotificationComponent } from "./components/notification/notification.component";
 import { RenderMode } from "@angular/ssr";
 import { PaymentCallbackComponent } from "./components/payment-callback/payment-callback.component";
+import { PrivacyPolicyComponent } from "./components/privacy-policy/privacy-policy.component";
+import { TermsOfServiceComponent } from "./components/terms-of-service/terms-of-service.component";
 
 export const routes: Routes = [
     { path: '', component: HomeComponent },
@@ -29,4 +31,6 @@ export const routes: Routes = [
     { path: 'contact', component: ContactComponent },
     { path: 'notification', component: NotificationComponent },
     { path: 'orders/:id', component: OrderConfirmComponent },
+    { path: 'privacy-policy', component: PrivacyPolicyComponent },
+    { path: 'terms-of-service', component: TermsOfServiceComponent },
 ];
