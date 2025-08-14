@@ -63,7 +63,7 @@ export class DetailProductComponent extends BaseComponent implements OnInit {
       }
 
       if (!isNaN(this.maSanPham)) {
-        this.isLoading=true;  
+        this.isLoading = true;
         this.sanPhamService.getSanPham(this.maSanPham).subscribe({
           next: (apiResponse: ApiResponse) => {
             const response = apiResponse.data;
@@ -76,14 +76,14 @@ export class DetailProductComponent extends BaseComponent implements OnInit {
             this.sanPham = response
             this.showImage(0);
           },
-          complete: () => { 
+          complete: () => {
             debugger;
-            this.isLoading=false;
-           },
+            this.isLoading = false;
+          },
           error: (error: any) => {
             debugger;
             console.error('Error fetching detail: ', error);
-            this.sanPham=undefined;
+            this.sanPham = undefined;
           }
         });
 
@@ -92,7 +92,7 @@ export class DetailProductComponent extends BaseComponent implements OnInit {
       else {
         console.error('Invalid masanpham: ', idParam)
       }
-    })
+    });
   }
 
   showImage(index: number): void {

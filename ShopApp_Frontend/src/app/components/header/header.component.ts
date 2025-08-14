@@ -33,9 +33,7 @@ export class HeaderComponent extends BaseComponent implements OnInit {
   navItems = [
     { name: 'Trang chủ', route: '/home' },
     { name: 'Thông báo', route: '/notification' },
-    { name: 'Sản phẩm', route: '/products' },
     { name: 'Đơn hàng', route: '/orders' },
-    { name: 'Tài khoản', route: '/account' },
     { name: 'Giới thiệu', route: '/introduce' },
     { name: 'Liên hệ', route: '/contact' },
   ];

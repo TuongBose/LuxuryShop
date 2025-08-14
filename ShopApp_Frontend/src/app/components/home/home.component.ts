@@ -23,6 +23,7 @@ import { ApiResponse } from '../../responses/api.response';
     FooterComponent,
     CommonModule,
     FormsModule,
+    RouterLink
   ]
 
 })

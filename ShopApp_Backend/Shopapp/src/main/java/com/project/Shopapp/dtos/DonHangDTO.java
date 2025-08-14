@@ -29,6 +29,9 @@ public class DonHangDTO {
     @JsonProperty("status")
     private String status;
 
+    @JsonProperty("vnp_TxnRef")
+    private String vnpTxnRef;
+
     @JsonProperty("coupon_code")
     private String couponCode;
 

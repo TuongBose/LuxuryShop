@@ -9,6 +9,8 @@ export class OrderDTO{
     ghichu:string;
     tongtien:number;
     phuongthucthanhtoan:string;
+    status:string;
+    vnp_TxnRef?:string;
     cartitems: CartItemDTO[];
 
   constructor(data:any){
@@ -20,6 +22,8 @@ export class OrderDTO{
     this.ghichu=data.ghichu;
     this.tongtien=data.tongtien;
     this.phuongthucthanhtoan=data.phuongthucthanhtoan;
+    this.status=data.status;
+    this.vnp_TxnRef = data.vnp_TxnRef;
     this.cartitems=data.cartitems
   }
 }

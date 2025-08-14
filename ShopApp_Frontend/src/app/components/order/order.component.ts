@@ -37,6 +37,7 @@ export class OrderComponent extends BaseComponent implements OnInit {
   private formBuilder = inject(FormBuilder);
   private cdr = inject(ChangeDetectorRef);
 
+  loading: boolean = false;
   cart: Map<number, number> = new Map();
   orderForm: FormGroup;
   cartItems: { sanPham: SanPham, quantity: number }[] = [];
@@ -52,6 +53,7 @@ export class OrderComponent extends BaseComponent implements OnInit {
     ghichu: '',
     tongtien: 0,
     phuongthucthanhtoan: 'cod',
+    status: '',
     cartitems: []
   }
 
@@ -121,6 +123,7 @@ export class OrderComponent extends BaseComponent implements OnInit {
   placeOrder() {
     debugger
     if (this.orderForm.errors == null) {
+      debugger
       // Gán giá trị từ form vào đối tuọng orderData
       /*
       this.orderData.fullname = this.orderForm.get('fullname')!.value;
@@ -142,77 +145,84 @@ export class OrderComponent extends BaseComponent implements OnInit {
 
       this.orderData.tongtien = this.totalAmount;
 
+      debugger
       if (this.orderData.phuongthucthanhtoan === 'vnpay') {
-        debugger
-        const amount = this.orderData.tongtien || 0;
-
-        // Bước 1: gọi API tạo link thanh toán
-        this.paymentService.createPaymentUrl({ amount, language: 'vn' })
-          .subscribe({
-            next: (res: ApiResponse) => {
-              // res.data la URL thanh toan
-              const paymentUrl = res.data;
-              console.log('URL thanh toán: ', paymentUrl);
-
-              // Bước 2: Tách vnp_TxnRef từ URL vừa trả về
-              const vnp_TxnRef = new URL(paymentUrl).searchParams.get('vnp_TxnRef') || '';
-
-              // Bước 3: gọi palceOrder kèm theo vnp_TxnRef
-              this.donHangService.placeOrder({ ...this.orderData }).subscribe({
-                next: (placeOrderResponse: ApiResponse) => {
-                  // Bước 4: Nếu đặt hàng thành công, điều hướng sang trang thanh toán
-                  debugger
-                  window.location.href = paymentUrl;
-                },
-                error: (err: HttpErrorResponse) => {
-                  debugger
-                  this.toastService.showToast({
-                    error: err,
-                    defaultMsg: 'Lỗi trong quá trình đặt hàng',
-                    title: 'Lỗi Đặt Hàng'
-                  });
-
-                }
-              })
-            },
-            error: (err: HttpErrorResponse) => {
-              this.toastService.showToast({
-                error: err,
-                defaultMsg: 'Lỗi kết nối đến cổng thanh toán',
-                title: 'Lỗi thanh toán',
-              });
-            }
-          })
+        this.handleVnpayPayment();
+      } else {
+        this.handleCodPayment();
       }
-
-      this.donHangService.placeOrder(this.orderData).subscribe({
-        next: (apiResponse: ApiResponse) => {
-          const response = apiResponse.data;
-          debugger
-          alert('Đặt hàng thành công');
-          this.cartService.clearCart();
-          this.router.navigate(['/'])
-        },
-        complete: () => {
-          debugger;
-          this.calculateTotal();
-        },
-        error: (error: any) => {
-          debugger
-          alert(`Lỗi khi đặt hàng: ${error}`);
-        }
-      });
-    } else {
-      alert('Dữ liệu không hợp lệ. Vui lòng kiểm tra lại.');
     }
   }
 
+  private handleVnpayPayment(): void {
+    debugger
+    const amount = this.orderData.tongtien || 0;
+    this.loading = true; // Hiển thị loading
+    this.paymentService.createPaymentUrl({ amount, language: 'vn' }).subscribe({
+      next: (res: ApiResponse) => {
+        const paymentUrl = res.data as string;
+        const vnp_TxnRef = new URL(paymentUrl).searchParams.get('vnp_TxnRef') || '';
+
+        this.donHangService.placeOrder({ ...this.orderData, vnp_TxnRef }).subscribe({
+          next: (placeOrderResponse: ApiResponse) => {
+            this.loading = false;
+            window.location.href = paymentUrl;
+          },
+          error: (err: HttpErrorResponse) => {
+            this.loading = false;
+            this.toastService.showToast({
+              defaultMsg: 'Lỗi trong quá trình đặt hàng',
+              title: 'Thông báo',
+              delay: 3000,
+              type: 'danger'
+            });
+          }
+        });
+      },
+      error: (err: HttpErrorResponse) => {
+        this.loading = false;
+        this.toastService.showToast({
+          defaultMsg: 'Lỗi kết nối đến cổng thanh toán',
+          title: 'Thông báo',
+          delay: 3000,
+          type: 'danger'
+        });
+      }
+    });
+  }
+
+  private handleCodPayment(): void {
+    debugger
+    this.loading = true;
+    this.donHangService.placeOrder(this.orderData).subscribe({
+      next: (apiResponse: ApiResponse) => {
+        this.loading = false;
+        this.toastService.showToast({
+          defaultMsg: 'Đặt hàng thành công',
+          title: 'Thông báo',
+          delay: 3000,
+          type: 'success'
+        });
+        this.cartService.clearCart();
+        this.router.navigate(['/']);
+      },
+      error: (error: HttpErrorResponse) => {
+        this.loading = false;
+        this.toastService.showToast({
+          defaultMsg: 'Lỗi khi đặt hàng',
+          title: 'Thông báo',
+          delay: 3000,
+          type: 'danger'
+        });
+      }
+    });
+  }
 
   calculateTotal(): void {
     this.totalAmount = this.cartItems.reduce(
       (total, item) => total + item.sanPham.gia * item.quantity,
       0
-    );
+    ) - this.couponDiscount;
   }
 
   decreaseQuantity(index: number): void {
@@ -261,14 +271,25 @@ export class OrderComponent extends BaseComponent implements OnInit {
     debugger
     const couponCode = this.orderForm.get('couponCode')!.value;
     if (!this.couponApplied && couponCode) {
+      this.loading = true;
       this.calculateTotal();
-      this.couponService.calculateCouponValue(couponCode, this.totalAmount)
-        .subscribe({
-          next: (apiResponse: ApiResponse) => {
-            this.totalAmount = apiResponse.data;
-            this.couponApplied = true;
-          }
-        });
+      this.couponService.calculateCouponValue(couponCode, this.totalAmount).subscribe({
+        next: (apiResponse: ApiResponse) => {
+          this.couponDiscount = apiResponse.data as number;
+          this.totalAmount -= this.couponDiscount;
+          this.couponApplied = true;
+          this.loading = false;
+        },
+        error: (err: HttpErrorResponse) => {
+          this.loading = false;
+          this.toastService.showToast({
+            defaultMsg: 'Mã giảm giá không hợp lệ',
+            title: 'Thông báo',
+            delay: 3000,
+            type: 'danger'
+          });
+        }
+      });
     }
   }
 

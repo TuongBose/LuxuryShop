@@ -84,10 +84,10 @@ public class VNPayService implements IVNPayService{
             String fieldValue=params.get(fieldName);
 
             if(fieldValue!=null&&!fieldValue.isEmpty()){
-                hashData.append(fieldName).append('=').append(URLEncoder.encode(fieldValue, StandardCharsets.US_ASCII));
-                queryData   .append(URLEncoder.encode(fieldName,StandardCharsets.US_ASCII))
+                hashData.append(fieldName).append('=').append(URLEncoder.encode(fieldValue, StandardCharsets.UTF_8));
+                queryData   .append(URLEncoder.encode(fieldName,StandardCharsets.UTF_8))
                         .append('=')
-                        .append(URLEncoder.encode(fieldValue,StandardCharsets.US_ASCII));
+                        .append(URLEncoder.encode(fieldValue,StandardCharsets.UTF_8));
                 if(iterator.hasNext()){
                     hashData.append('&');
                     queryData.append('&');
@@ -138,6 +138,7 @@ public class VNPayService implements IVNPayService{
         connection.setDoOutput(true);
         try (DataOutputStream writer = new DataOutputStream(connection.getOutputStream())) {
             writer.writeBytes(new Gson().toJson(params));
+            writer.flush();
         }
 
         int responseCode = connection.getResponseCode();
@@ -153,7 +154,12 @@ public class VNPayService implements IVNPayService{
             } else {
                 throw new RuntimeException("VNPay API Error: " + response.toString());
             }
+        }catch (IOException e) {
+            throw new IOException("Failed to connect to VNPay API", e);
+        } finally {
+            connection.disconnect();
         }
+
 
     }
 

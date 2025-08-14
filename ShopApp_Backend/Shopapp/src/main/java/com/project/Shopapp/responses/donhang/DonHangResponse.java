@@ -26,6 +26,7 @@ public class DonHangResponse {
     private BigDecimal TONGTIEN;
     private String PHUONGTHUCTHANHTOAN;
     private boolean IS_ACTIVE;
+    private String vnpTxnRef;
     private List<CTDHResponse> ctdhList;
 
     public static DonHangResponse fromDonHang(DonHang donHang, List<CTDHResponse> ctdhList) {
@@ -42,6 +43,7 @@ public class DonHangResponse {
                 .TONGTIEN(donHang.getTONGTIEN())
                 .PHUONGTHUCTHANHTOAN(donHang.getPHUONGTHUCTHANHTOAN())
                 .IS_ACTIVE(donHang.isIS_ACTIVE())
+                .vnpTxnRef(donHang.getVnpTxnRef())
                 .ctdhList(ctdhList)
                 .build();
     }

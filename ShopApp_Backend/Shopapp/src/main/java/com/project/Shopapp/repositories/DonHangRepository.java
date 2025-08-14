@@ -10,6 +10,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface DonHangRepository extends JpaRepository<DonHang, Integer> {
     List<DonHang> findByUSERID(Account account);
@@ -18,4 +19,6 @@ public interface DonHangRepository extends JpaRepository<DonHang, Integer> {
             "(:keyword IS NULL OR :keyword = '' OR o.FULLNAME LIKE %:keyword% OR o.DIACHI LIKE %:keyword% " +
             "OR o.GHICHU LIKE %:keyword% OR o.EMAIL LIKE %:keyword%)")
     Page<DonHang> findByKeyword(@Param("keyword") String keyword, Pageable pageable);
+
+    Optional<DonHang> findByVnpTxnRef(String vnpTxnRef);
 }

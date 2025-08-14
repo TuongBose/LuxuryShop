@@ -13,13 +13,14 @@ import { IntroduceComponent } from "./components/introduce/introduce.component";
 import { ContactComponent } from "./components/contact/contact.component";
 import { NotificationComponent } from "./components/notification/notification.component";
 import { RenderMode } from "@angular/ssr";
+import { PaymentCallbackComponent } from "./components/payment-callback/payment-callback.component";
 
 export const routes: Routes = [
     { path: '', component: HomeComponent },
     { path: 'login', component: LoginComponent },
     { path: 'auth/google/callback', component: AuthCallbackComponent },
     { path: 'auth/facebook/callback', component: AuthCallbackComponent },
-    //{ path: 'payments/payment-callback', component: PaymentCallbackComponent },
+    { path: 'payments/payment-callback', component: PaymentCallbackComponent },
     { path: 'register', component: RegisterComponent },
     { path: 'products/:id', component: DetailProductComponent },
     { path: 'orders', component: OrderComponent, canActivate: [AuthGuardFn] },

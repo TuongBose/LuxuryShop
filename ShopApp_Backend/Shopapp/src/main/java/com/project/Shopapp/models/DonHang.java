@@ -1,5 +1,6 @@
 package com.project.Shopapp.models;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -40,6 +41,9 @@ public class DonHang {
     private BigDecimal TONGTIEN;
     private String PHUONGTHUCTHANHTOAN;
     private boolean IS_ACTIVE;
+
+    @JsonProperty("vnp_txn_ref")
+    private String vnpTxnRef;
 
     @ManyToOne
     @JoinColumn(name = "coupon_id")

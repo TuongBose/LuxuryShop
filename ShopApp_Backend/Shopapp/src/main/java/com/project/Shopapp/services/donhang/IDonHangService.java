@@ -15,5 +15,5 @@ public interface IDonHangService {
     DonHang updateDonHang(int id, DonHangDTO donHangDTO) throws Exception;
     void deleteDonHang(int id) throws Exception;
     Page<DonHangResponse> getAllDonHangByKeyword(String keyword, Pageable pageable);
-    DonHangResponse updateStatus(String status, int id) throws Exception;
+    DonHangResponse updateStatus(String status, String vnpTxnRef) throws Exception;
 }

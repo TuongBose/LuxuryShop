@@ -114,13 +114,14 @@ public class DonHangController {
                 .build());
     }
 
-    @PutMapping("/status/{id}")
+    @PutMapping("/status")
+    @PreAuthorize("hasRole('ROLE_ADMIN') or hasRole('ROLE_USER')")
     public ResponseEntity<?> updateStatusDonHang(
-            @RequestParam(defaultValue = "", required = false) String status,
-            @Valid @PathVariable int id
+            @RequestParam(name = "status") String status,
+            @RequestParam(name = "vnpTxnRef") String vnpTxnRef
     ) {
         try {
-            return ResponseEntity.ok(donHangService.updateStatus(status, id));
+            return ResponseEntity.ok(donHangService.updateStatus(status, vnpTxnRef));
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }

@@ -23,8 +23,12 @@ export class DonHangService {
         return this.http.get<ApiResponse>(`${environment.apiBaseUrl}/donhangs/${maDonHang}`);
     }
 
-    updateOrder(orderId: number, orderData: OrderDTO): Observable<ApiResponse> {
-    const url = `${environment.apiBaseUrl}/orders/${orderId}`;
-    return this.http.put<ApiResponse>(url, orderData);
-  }
+    updateOrderStatus(vnp_TxnRef: string, status: string): Observable<ApiResponse> {
+        debugger
+        const params = new HttpParams()
+            .set('status', status.toString())
+            .set('vnpTxnRef', vnp_TxnRef.toString());
+        const url = `${environment.apiBaseUrl}/donhangs/status`;
+        return this.http.put<ApiResponse>(url,null, { params });
+    }
 }

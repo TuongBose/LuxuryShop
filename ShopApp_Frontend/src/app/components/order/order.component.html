@@ -4,7 +4,7 @@
     <h1 class="display-6 fw-bold text-primary">Trang đặt hàng</h1>
     <p class="text-muted">Hoàn tất đơn hàng của bạn một cách dễ dàng!</p>
   </div>
-  
+
   <form [formGroup]="orderForm">
     <div class="row g-3">
       <!-- Thông tin người nhận - Responsive order -->
@@ -14,54 +14,55 @@
             <h3 class="product-header mb-3">
               <i class="fas fa-user me-2"></i>Thông tin người nhận
             </h3>
-            
+
             <div class="mb-3">
               <label for="name" class="form-label">Họ và tên *</label>
               <input type="text" formControlName="fullname" class="form-control" id="name"
                 [class.is-invalid]="orderForm.get('fullname')!.invalid && orderForm.get('fullname')!.touched">
               @if (orderForm.get('fullname')!.invalid && orderForm.get('fullname')!.touched) {
-                <div class="invalid-feedback">Họ và tên bắt buộc</div>
+              <div class="invalid-feedback">Họ và tên bắt buộc</div>
               }
             </div>
-            
+
             <div class="mb-3">
               <label for="email" class="form-label">Email *</label>
               <input type="email" formControlName="email" class="form-control" id="email"
                 [class.is-invalid]="orderForm.get('email')!.invalid && orderForm.get('email')!.touched">
               @if (orderForm.get('email')!.invalid && orderForm.get('email')!.touched) {
-                <div class="invalid-feedback">Email không hợp lệ</div>
+              <div class="invalid-feedback">Email không hợp lệ</div>
               }
             </div>
-            
+
             <div class="mb-3">
               <label for="phone" class="form-label">Số điện thoại *</label>
               <input type="tel" formControlName="sodienthoai" class="form-control" id="phone"
                 [class.is-invalid]="orderForm.get('sodienthoai')!.invalid && orderForm.get('sodienthoai')!.touched">
               @if (orderForm.get('sodienthoai')!.invalid && orderForm.get('sodienthoai')!.touched) {
-                <div class="invalid-feedback">Số điện thoại không hợp lệ</div>
+              <div class="invalid-feedback">Số điện thoại không hợp lệ</div>
               }
             </div>
-            
+
             <div class="mb-3">
               <label for="address" class="form-label">Địa chỉ *</label>
               <textarea formControlName="diachi" class="form-control" id="address" rows="2"
                 [class.is-invalid]="orderForm.get('diachi')!.invalid && orderForm.get('diachi')!.touched"></textarea>
               @if (orderForm.get('diachi')!.invalid && orderForm.get('diachi')!.touched) {
-                <div class="invalid-feedback">Địa chỉ không hợp lệ</div>
+              <div class="invalid-feedback">Địa chỉ không hợp lệ</div>
               }
             </div>
-            
+
             <div class="mb-3">
               <label for="note" class="form-label">Ghi chú</label>
-              <textarea formControlName="ghichu" class="form-control" id="note" rows="2" 
+              <textarea formControlName="ghichu" class="form-control" id="note" rows="2"
                 placeholder="Nhập ghi chú (tùy chọn)"></textarea>
             </div>
-            
+
             <div class="mb-3">
               <label for="phuongthucthanhtoan" class="form-label">Phương thức thanh toán *</label>
               <select class="form-select" id="phuongthucthanhtoan" formControlName="phuongthucthanhtoan">
-                <option value="cod">💰 Thanh toán khi nhận hàng (COD)</option>
-                <option value="other">🏦 Thanh toán khác</option>
+                <option value="cod">Thanh toán khi nhận hàng (COD)</option>
+                <option value="vnpay">Thanh toán VNPAY</option>
+                <option value="other">Thanh toán khác</option>
               </select>
             </div>
           </div>
@@ -75,44 +76,44 @@
             <h3 class="product-order mb-3">
               <i class="fas fa-shopping-cart me-2"></i>Sản phẩm đã đặt hàng
             </h3>
-            
+
             <!-- Mobile Product List -->
             <div class="d-block d-md-none">
               @for (item of cartItems; track item.sanPham.masanpham; let i = $index) {
-                <div class="mobile-product-item border rounded p-3 mb-3">
-                  <div class="row g-2">
-                    <div class="col-4">
-                      <img [src]="item.sanPham.thumbnail" alt="Hình ảnh" class="mobile-product-image">
+              <div class="mobile-product-item border rounded p-3 mb-3">
+                <div class="row g-2">
+                  <div class="col-4">
+                    <img [src]="item.sanPham.thumbnail" alt="Hình ảnh" class="mobile-product-image">
+                  </div>
+                  <div class="col-8">
+                    <h6 class="product-name mb-2">{{ item.sanPham.tensanpham }}</h6>
+                    <div class="price-info mb-2">
+                      <small class="text-muted">Đơn giá:</small>
+                      <span class="fw-bold">{{ item.sanPham.gia | number: '1.0-0' }}đ</span>
                     </div>
-                    <div class="col-8">
-                      <h6 class="product-name mb-2">{{ item.sanPham.tensanpham }}</h6>
-                      <div class="price-info mb-2">
-                        <small class="text-muted">Đơn giá:</small>
-                        <span class="fw-bold">{{ item.sanPham.gia | number: '1.0-0' }}đ</span>
-                      </div>
-                      <div class="quantity-control mb-2">
-                        <label class="form-label small">Số lượng:</label>
-                        <div class="input-group input-group-sm">
-                          <button class="btn btn-outline-secondary" (click)="decreaseQuantity(i)">
-                            <i class="fas fa-minus"></i>
-                          </button>
-                          <input type="text" class="form-control text-center" [value]="item.quantity" readonly>
-                          <button class="btn btn-outline-secondary" (click)="increaseQuantity(i)">
-                            <i class="fas fa-plus"></i>
-                          </button>
-                        </div>
-                      </div>
-                      <div class="d-flex justify-content-between align-items-center">
-                        <div class="total-price">
-                          <strong class="text-primary">{{ item.sanPham.gia * item.quantity | number: '1.0-0' }}đ</strong>
-                        </div>
-                        <button class="btn btn-outline-danger btn-sm" (click)="confirmDelete(i)">
-                          <i class="fas fa-trash"></i>
+                    <div class="quantity-control mb-2">
+                      <label class="form-label small">Số lượng:</label>
+                      <div class="input-group input-group-sm">
+                        <button class="btn btn-outline-secondary" (click)="decreaseQuantity(i)">
+                          <i class="fas fa-minus"></i>
+                        </button>
+                        <input type="text" class="form-control text-center" [value]="item.quantity" readonly>
+                        <button class="btn btn-outline-secondary" (click)="increaseQuantity(i)">
+                          <i class="fas fa-plus"></i>
                         </button>
                       </div>
                     </div>
+                    <div class="d-flex justify-content-between align-items-center">
+                      <div class="total-price">
+                        <strong class="text-primary">{{ item.sanPham.gia * item.quantity | number: '1.0-0' }}đ</strong>
+                      </div>
+                      <button class="btn btn-outline-danger btn-sm" (click)="confirmDelete(i)">
+                        <i class="fas fa-trash"></i>
+                      </button>
+                    </div>
                   </div>
                 </div>
+              </div>
               }
             </div>
 
@@ -130,55 +131,61 @@
                 </thead>
                 <tbody>
                   @for (item of cartItems; track item.sanPham.masanpham; let i = $index) {
-                    <tr>
-                      <td>
-                        <div class="product-info d-flex align-items-center">
-                          <img [src]="item.sanPham.thumbnail" alt="Hình ảnh" class="product-image me-3">
-                          <span class="product-name">{{ item.sanPham.tensanpham }}</span>
+                  <tr>
+                    <td>
+                      <div class="product-info d-flex align-items-center">
+                        <img [src]="item.sanPham.thumbnail" alt="Hình ảnh" class="product-image me-3">
+                        <span class="product-name">{{ item.sanPham.tensanpham }}</span>
+                      </div>
+                    </td>
+                    <td class="text-center">
+                      <div class="product-quantity d-flex justify-content-center">
+                        <div class="input-group" style="max-width: 120px;">
+                          <button class="btn btn-outline-secondary btn-sm" (click)="decreaseQuantity(i)">-</button>
+                          <input type="text" class="form-control form-control-sm text-center" [value]="item.quantity"
+                            readonly>
+                          <button class="btn btn-outline-secondary btn-sm" (click)="increaseQuantity(i)">+</button>
                         </div>
-                      </td>
-                      <td class="text-center">
-                        <div class="product-quantity d-flex justify-content-center">
-                          <div class="input-group" style="max-width: 120px;">
-                            <button class="btn btn-outline-secondary btn-sm" (click)="decreaseQuantity(i)">-</button>
-                            <input type="text" class="form-control form-control-sm text-center" [value]="item.quantity" readonly>
-                            <button class="btn btn-outline-secondary btn-sm" (click)="increaseQuantity(i)">+</button>
-                          </div>
-                        </div>
-                      </td>
-                      <td class="text-center">{{ item.sanPham.gia | number: '1.0-0' }}đ</td>
-                      <td class="text-center fw-bold text-primary">{{ item.sanPham.gia * item.quantity | number: '1.0-0' }}đ</td>
-                      <td class="text-center">
-                        <button class="btn btn-outline-danger btn-sm" (click)="confirmDelete(i)">
-                          <i class="fas fa-trash"></i>
-                        </button>
-                      </td>
-                    </tr>
+                      </div>
+                    </td>
+                    <td class="text-center">{{ item.sanPham.gia | number: '1.0-0' }}đ</td>
+                    <td class="text-center fw-bold text-primary">{{ item.sanPham.gia * item.quantity | number: '1.0-0'
+                      }}đ</td>
+                    <td class="text-center">
+                      <button class="btn btn-outline-danger btn-sm" (click)="confirmDelete(i)">
+                        <i class="fas fa-trash"></i>
+                      </button>
+                    </td>
+                  </tr>
                   }
                 </tbody>
               </table>
             </div>
-            
+
             <!-- Coupon Section -->
             <div class="coupon-section mt-4 p-3 bg-light rounded">
               <h5 class="product-header mb-3">
                 <i class="fas fa-ticket-alt me-2"></i>Mã giảm giá
               </h5>
               <div class="input-group">
-                <input formControlName="couponCode" type="text" class="form-control" 
-                  placeholder="Nhập mã giảm giá">
+                <input formControlName="couponCode" type="text" class="form-control" placeholder="Nhập mã giảm giá">
                 <button class="btn btn-primary" type="button" (click)="applyCoupon()">
                   Áp dụng
                 </button>
               </div>
               @if (couponDiscount > 0) {
-                <div class="alert alert-success mt-2 mb-0">
-                  <i class="fas fa-check-circle me-2"></i>
-                  Bạn được giảm: <strong>{{ couponDiscount | number: '1.0-0' }}đ</strong>
-                </div>
+              <div class="alert alert-success mt-2 mb-0">
+                <i class="fas fa-check-circle me-2"></i>
+                Bạn được giảm: <strong>{{ couponDiscount | number: '1.0-0' }}đ</strong>
+              </div>
+              }
+              @if (!loading && couponApplied && couponDiscount === 0) {
+              <div class="alert alert-danger mt-2 mb-0">
+                Mã giảm giá không hợp lệ
+              </div>
               }
             </div>
-            
+
             <!-- Total Section -->
             <div class="total-section mt-4 p-3 bg-primary bg-opacity-10 rounded">
               <div class="row">
@@ -190,26 +197,26 @@
                 </div>
               </div>
               @if (couponDiscount > 0) {
-                <hr class="my-2">
-                <div class="row">
-                  <div class="col-6">
-                    <small class="text-success">Giảm giá:</small>
-                  </div>
-                  <div class="col-6 text-end">
-                    <small class="text-success">-{{ couponDiscount | number: '1.0-0' }}đ</small>
-                  </div>
+              <hr class="my-2">
+              <div class="row">
+                <div class="col-6">
+                  <small class="text-success">Giảm giá:</small>
                 </div>
-                <div class="row">
-                  <div class="col-6">
-                    <strong>Thành tiền:</strong>
-                  </div>
-                  <div class="col-6 text-end">
-                    <h4 class="text-success fw-bold">{{ (totalAmount - couponDiscount) | number: '1.0-0' }}đ</h4>
-                  </div>
+                <div class="col-6 text-end">
+                  <small class="text-success">-{{ couponDiscount | number: '1.0-0' }}đ</small>
                 </div>
+              </div>
+              <div class="row">
+                <div class="col-6">
+                  <strong>Thành tiền:</strong>
+                </div>
+                <div class="col-6 text-end">
+                  <h4 class="text-success fw-bold">{{ (totalAmount - couponDiscount) | number: '1.0-0' }}đ</h4>
+                </div>
+              </div>
               }
             </div>
-            
+
             <!-- Order Button -->
             <div class="d-grid mt-4">
               <button (click)="placeOrder()" class="btn btn-primary btn-lg" type="button">

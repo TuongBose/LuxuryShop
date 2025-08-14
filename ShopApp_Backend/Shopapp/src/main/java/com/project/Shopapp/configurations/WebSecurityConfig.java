@@ -90,7 +90,6 @@ public class WebSecurityConfig {
                             .requestMatchers(DELETE, String.format("%s/sanphams/**", apiPrefix)).hasRole(Role.ADMIN)
 
                             // donhangs
-                            .requestMatchers(PUT, String.format("%s/donhangs/**", apiPrefix)).hasRole(Role.ADMIN)
                             .requestMatchers(POST, String.format("%s/donhangs/**", apiPrefix)).hasAnyRole(Role.USER, Role.ADMIN)
                             .requestMatchers(DELETE, String.format("%s/donhangs/**", apiPrefix)).hasRole(Role.ADMIN)
 

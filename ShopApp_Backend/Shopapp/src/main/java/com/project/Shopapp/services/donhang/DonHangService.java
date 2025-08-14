@@ -9,6 +9,7 @@ import com.project.Shopapp.repositories.*;
 import com.project.Shopapp.responses.ctdh.CTDHResponse;
 import com.project.Shopapp.responses.donhang.DonHangResponse;
 import com.project.Shopapp.utils.MessageKeys;
+import com.project.Shopapp.utils.OrderStatusUtils;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,6 +21,7 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -55,6 +57,10 @@ public class DonHangService implements IDonHangService {
         donHang.setTRANGTHAI(OrderStatus.PENDING);
         donHang.setIS_ACTIVE(true); // Đoạn này nên set sẵn trong SQL
         donHang.setTONGTIEN(donHangDTO.getTONGTIEN());
+
+        if ("vnpay".equalsIgnoreCase(donHangDTO.getPHUONGTHUCTHANHTOAN()) && donHangDTO.getVnpTxnRef() != null) {
+            donHang.setVnpTxnRef(donHangDTO.getVnpTxnRef());
+        }
 
         // Xu ly coupon
         String couponCode = donHangDTO.getCouponCode();
@@ -209,18 +215,38 @@ public class DonHangService implements IDonHangService {
     }
 
     @Override
-    public DonHangResponse updateStatus(String status, int id) throws Exception {
-        DonHang existingDonHang = donHangRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Does not exist MADONHANG"));
+    public DonHangResponse updateStatus(String status, String VnpTxnRef) throws Exception {
+        Optional<DonHang> donHangOptional = donHangRepository.findByVnpTxnRef(VnpTxnRef);
 
+        if (donHangOptional.isEmpty()) {
+            throw new DataNotFoundException("Does not exist DonHang");
+        }
+
+        DonHang existingDonHang = donHangOptional.get();
+        OrderStatusUtils.validateStatus(status);
         existingDonHang.setTRANGTHAI(status);
         donHangRepository.save(existingDonHang);
+
 
         List<CTDHResponse> ctdhResponseList = ctdhRepository.findByMADONHANG(existingDonHang)
                 .stream()
                 .map(CTDHResponse::fromCTDH)
                 .collect(Collectors.toList());
 
-        return DonHangResponse.fromDonHang(existingDonHang, ctdhResponseList);
+        DonHangResponse donHangResponse = DonHangResponse.fromDonHang(existingDonHang, ctdhResponseList);
+
+        Account existingAccount = accountRepository.findById(donHangResponse.getUSERID())
+                .orElseThrow(() -> new DataNotFoundException(localizationUtils.getLocalizedMessage(MessageKeys.USER_NOT_FOUND)));
+
+        Notification newNotification = Notification.builder()
+                .user(existingAccount)
+                .title("Order with ID: " + donHangResponse.getMADONHANG() + " have been " + status)
+                .content("Join us to protect your rights, only receive goods and pay when the order is in \"delivery\" status")
+                .type("INFO")
+                .isRead(false)
+                .build();
+        notificationRepository.save(newNotification);
+
+        return donHangResponse;
     }
 }
