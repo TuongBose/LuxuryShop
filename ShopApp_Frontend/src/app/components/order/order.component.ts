@@ -37,6 +37,8 @@ export class OrderComponent extends BaseComponent implements OnInit {
   private formBuilder = inject(FormBuilder);
   private cdr = inject(ChangeDetectorRef);
 
+  indexError: number[] = [];
+  hasStockIssue: boolean = false;
   loading: boolean = false;
   cart: Map<number, number> = new Map();
   orderForm: FormGroup;
@@ -108,6 +110,21 @@ export class OrderComponent extends BaseComponent implements OnInit {
             quantity: this.cart.get(masanpham)!
           };
         });
+
+        this.cartItems.forEach((cartItem, index) => {
+          if (cartItem.sanPham.soluongtonkho < cartItem.quantity) {
+            this.hasStockIssue = true;
+            this.indexError.push(index);
+            this.toastService.showToast({
+              defaultMsg: `Sản phẩm "${cartItem.sanPham.tensanpham}" không đủ hàng trong kho (Còn ${cartItem.sanPham.soluongtonkho} sản phẩm).`,
+              title: 'Thông báo',
+              delay: 3000,
+              type: 'danger'
+            });
+            this.loading = false;
+            return;
+          }
+        });
       },
       complete: () => {
         debugger
@@ -124,32 +141,46 @@ export class OrderComponent extends BaseComponent implements OnInit {
     debugger
     if (this.orderForm.errors == null) {
       debugger
-      // Gán giá trị từ form vào đối tuọng orderData
-      /*
-      this.orderData.fullname = this.orderForm.get('fullname')!.value;
-      this.orderData.email=this.orderForm.get('email')!.value;
-      this.orderData.sodienthoai=this.orderForm.get('sodienthoai')!.value;
-      this.orderData.diachi=this.orderForm.get('diachi')!.value;
-      this.orderData.ghichu=this.orderForm.get('ghichu')!.value;
-      this.orderData.phuongthucthanhtoan=this.orderForm.get('phuongthucthanhtoan')!.value;
-      */
-      // Sử dụng toán tử spread (...) để sao chép giá trị từ form vào orderData
-      this.orderData = {
-        ...this.orderData,
-        ...this.orderForm.value
-      };
-      this.orderData.cartitems = this.cartItems.map(cartItem => ({
-        masanpham: cartItem.sanPham.masanpham,
-        quantity: cartItem.quantity
-      }));
+      if (!this.hasStockIssue) {
+        // Gán giá trị từ form vào đối tuọng orderData
+        /*
+        this.orderData.fullname = this.orderForm.get('fullname')!.value;
+        this.orderData.email=this.orderForm.get('email')!.value;
+        this.orderData.sodienthoai=this.orderForm.get('sodienthoai')!.value;
+        this.orderData.diachi=this.orderForm.get('diachi')!.value;
+        this.orderData.ghichu=this.orderForm.get('ghichu')!.value;
+        this.orderData.phuongthucthanhtoan=this.orderForm.get('phuongthucthanhtoan')!.value;
+        */
+        // Sử dụng toán tử spread (...) để sao chép giá trị từ form vào orderData
+        this.orderData = {
+          ...this.orderData,
+          ...this.orderForm.value
+        };
+        this.orderData.cartitems = this.cartItems.map(cartItem => ({
+          masanpham: cartItem.sanPham.masanpham,
+          quantity: cartItem.quantity
+        }));
 
-      this.orderData.tongtien = this.totalAmount;
+        this.orderData.tongtien = this.totalAmount;
 
-      debugger
-      if (this.orderData.phuongthucthanhtoan === 'vnpay') {
-        this.handleVnpayPayment();
+        debugger
+        if (this.orderData.phuongthucthanhtoan === 'vnpay') {
+          this.handleVnpayPayment();
+        } else {
+          this.handleCodPayment();
+        }
       } else {
-        this.handleCodPayment();
+        debugger
+        this.loading = false;
+        this.indexError.forEach(index => {
+          const cartItem = this.cartItems[index];
+          this.toastService.showToast({
+            defaultMsg: `Sản phẩm "${cartItem.sanPham.tensanpham}" không đủ hàng trong kho (Còn ${cartItem.sanPham.soluongtonkho} sản phẩm).`,
+            title: 'Thông báo',
+            delay: 3000,
+            type: 'danger'
+          });
+        });
       }
     }
   }
@@ -236,7 +267,17 @@ export class OrderComponent extends BaseComponent implements OnInit {
   }
 
   increaseQuantity(index: number): void {
-    this.cartItems[index].quantity++;
+    if (this.cartItems[index].sanPham.soluongtonkho > this.cartItems[index].quantity) {
+      this.cartItems[index].quantity++;
+    } else {
+      this.toastService.showToast({
+        defaultMsg: `Sản phẩm "${this.cartItems[index].sanPham.tensanpham}" không đủ hàng trong kho (Còn ${this.cartItems[index].sanPham.soluongtonkho} sản phẩm).`,
+        title: 'Thông báo',
+        delay: 3000,
+        type: 'danger'
+      });
+    }
+
     debugger;
     // Cập nhật lại this.cart từ this.cartItems
     this.updateCartFromCartItems();

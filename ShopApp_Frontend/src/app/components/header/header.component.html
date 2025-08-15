@@ -21,7 +21,7 @@
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" [ngClass]="{'active':activeNavItem===1}" (click)="setActiveNavItem(1)"
-                            routerLink="/notification"><i class="fa fa-bell"></i>Thông báo
+                            routerLink="/notification"><i class="fa fa-bell" style="padding-right: 5px;"></i>Thông báo
                             @if(unreadNotificationCount > 0 && account){
                             <span class="notification-badge">{{ unreadNotificationCount }}</span>
                             }
@@ -34,7 +34,7 @@
                     <li class="nav-item">
                         <a class="nav-link" [ngClass]="{'active':activeNavItem===2}" (click)="setActiveNavItem(2)"
                             routerLink="/orders">
-                            <i class="fa fa-shopping-cart icon"></i> Giỏ hàng
+                            <i class="fa fa-shopping-cart icon" style="padding-right: 5px;"></i>Giỏ hàng
                             @if(cartItemCount>0 && account){
                             <span class="cart-badge">{{ cartItemCount }}</span>
                             }
@@ -45,7 +45,7 @@
                         <ng-container>
                             <ng-container ngbPopover="Tài khoản của tôi <br>Đơn mua<br>Đăng xuất"
                                 popoverTitle="User Actions" triggers="click" [placement]="'bottom'">
-                                <a class="nav-link" [ngbPopover]="popoverContent"
+                                <a class="nav-link" style="cursor: pointer;" [ngbPopover]="popoverContent"
                                     (click)="togglePopover($event)">{{account.fullname}}</a>
                                 <ng-template #popoverContent>
                                     <div class="popover-list">

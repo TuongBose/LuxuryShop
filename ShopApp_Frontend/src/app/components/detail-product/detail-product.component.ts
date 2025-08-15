@@ -135,6 +135,12 @@ export class DetailProductComponent extends BaseComponent implements OnInit {
     this.isPressAddToCart = true;
     if (this.sanPham) {
       this.cartService.addToCart(this.sanPham.masanpham, this.quantity);
+      this.toastService.showToast({
+        defaultMsg: 'Thêm vào giỏ hàng thành công',
+        title: 'Thông báo',
+        delay: 3000,
+        type: 'success'
+      });
     }
     else {
       console.error("Không thể thêm sản phẩm vào giỏ hàng vì San Phẩm là Null.");

@@ -54,9 +54,9 @@ services:
       KAFKA_BROKER_SERVER: kafka-broker-01
       KAFKA_BROKER_PORT: 19092
       # Thiết lập dành cho môi trường product, develop phải comment lại
-      # GOOGLE_REDIRECT_URI: https://vps.luxuryshop.x10.mx/auth/google/callback
-      # FACEBOOK_REDIRECT_URI: https://vps.luxuryshop.x10.mx/auth/facebook/callback
-      # VNPAY_RETURN_URL: https://vps.luxuryshop.x10.mx/payment/vnpay-return
+      GOOGLE_REDIRECT_URI: https://vps.luxuryshop.x10.mx/auth/google/callback
+      FACEBOOK_REDIRECT_URI: https://vps.luxuryshop.x10.mx/auth/facebook/callback
+      VNPAY_RETURN_URI: https://vps.luxuryshop.x10.mx/payments/payment-callback
     depends_on:
       - mysql-container
     networks:

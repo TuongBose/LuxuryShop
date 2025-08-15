@@ -86,7 +86,7 @@ header.scrolled .navbar-toggler-icon {
 .cart-badge {
   position: absolute;
   top: 0;
-  right: -10px;
+  right: -8px;
   background: linear-gradient(135deg, #ff4444, #ff6b6b);
   color: white;
   border-radius: 50%;
@@ -107,7 +107,7 @@ header.scrolled .navbar-toggler-icon {
 .notification-badge {
   position: absolute;
   top: 0;
-  right: -10px;
+  right: -8px;
   background: linear-gradient(135deg, #ff4444, #ff6b6b);
   color: white;
   border-radius: 50%;
@@ -145,6 +145,7 @@ header.scrolled .navbar-toggler-icon {
 .popover-item:hover {
   background-color: rgba(127, 68, 255, 0.1);
   color: $shopapp-color;
+  cursor: pointer;
 }
 
 @media (max-width: 768px) {

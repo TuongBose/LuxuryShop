@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { AccountService } from '../../services/account.service';
 import { AccountResponse } from '../../responses/account/account.response';
 import { TokenService } from '../../services/token.service';

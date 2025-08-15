@@ -18,7 +18,7 @@
         <div class="form-group mb-4 position-relative">
           <label for="password" class="form-label">Mật khẩu</label>
           <input [type]="showPassword ? 'text' : 'password'" required [(ngModel)]="password"
-            placeholder="Ít nhất 3 ký tự" class="form-control" id="password" name="password">
+            placeholder="Ít nhất 6 ký tự" class="form-control" id="password" name="password">
           <i class="password-toggle fas" [ngClass]="{'fa-eye': showPassword, 'fa-eye-slash': !showPassword}"
             (click)="showPassword = !showPassword"></i>
           @if(loginForm.form.get('password')?.invalid && loginForm.form.get('password')?.touched){

@@ -128,6 +128,12 @@ export class HomeComponent extends BaseComponent implements OnInit {
     this.isPressAddToCart = true;
     if (masanpham) {
       this.cartService.addToCart(masanpham, 1);
+      this.toastService.showToast({
+        defaultMsg: 'Thêm vào giỏ hàng thành công',
+        title: 'Thông báo',
+        delay: 3000,
+        type: 'success'
+      });
     }
     else {
       console.error("Không thể thêm sản phẩm vào giỏ hàng vì San Phẩm là Null.");
@@ -144,7 +150,8 @@ export class HomeComponent extends BaseComponent implements OnInit {
 
     if (masanpham) {
       this.cartService.addToCart(masanpham, 1);
-      this.router.navigate(['/order']); // Chuyển ngay đến trang order
+      this.router.navigate(['/orders']); // Chuyển ngay đến trang order
+      return;
     } else {
       console.error("Không thể mua ngay vì San Phẩm là Null.");
     }
