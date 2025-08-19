@@ -6,6 +6,11 @@ RUN mvn clean package -DskipTests
 
 #multi-staging
 FROM openjdk:21
+
+# set timezone
+RUN ln -sf /usr/share/zoneinfo/Asia/Ho_Chi_Minh /etc/localtime \
+    && echo "Asia/Ho_Chi_Minh" > /etc/timezone
+
 WORKDIR /app
 COPY --from=build /app/target/Shopapp-0.0.1-SNAPSHOT.jar app.jar
 COPY --from=build /app/uploads uploads

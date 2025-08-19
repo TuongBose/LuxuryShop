@@ -127,5 +127,5 @@ vnpay:
   pay-url: "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html"
   return-url: "${VNPAY_RETURN_URI:http://localhost:4200/payments/payment-callback}"
   tmn-code: "OZYHVEZ5"
-  secret-key: "8KWHSG7DRHHXBD2FR0IVE60BG1W84G0U"
+  secret-key: "O9G96CAW41KRP6YKLVNKA9W04L0B7XEN"
   api-url: "https://sandbox.vnpayment.vn/merchant_webapi/api/transaction"
