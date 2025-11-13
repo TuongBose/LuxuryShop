@@ -92,7 +92,7 @@ public class FeedbackController {
     public ResponseEntity<ResponseObject> generateFakeFeedbacks() throws Exception {
         feedbackService.generateFakeFeedbacks();
         return ResponseEntity.ok(ResponseObject.builder()
-                .message("Insert fake feedbacks succcessfully")
+                .message("Insert fake feedbacks successfully")
                 .data(null)
                 .status(HttpStatus.OK)
                 .build());
